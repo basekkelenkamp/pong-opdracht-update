@@ -1,6 +1,8 @@
 class Game {
 
     private gameObjects : GameObject[] = []
+    player1 : number = 0
+    player2 : number = 0
 
     constructor() {
         this.gameObjects.push(new Paddle(20, 87, 83))
@@ -24,12 +26,14 @@ class Game {
                 if (gameObject.getRectangle().left < 0 && gameObject instanceof Ball) {
 
                     this.removeBall(gameObject)
+                    this.addScore("player2")
                 }
             
                 // ball leaves the screen right: remove ball!
                 if (gameObject.getRectangle().right > window.innerWidth+50 && gameObject instanceof Ball) {
 
                     this.removeBall(gameObject)
+                    this.addScore("player1")
                 }                
             
 
@@ -53,10 +57,8 @@ class Game {
         }
 
 
-        //     b.update()
-        // }
+        console.log(`score: P1 has ${this.player1}, P2 has ${this.player2}`)
 
-        // this.paddle.update()
 
         requestAnimationFrame(() => this.update())
     }
@@ -74,6 +76,14 @@ class Game {
         console.log(this.gameObjects.length)
         
         ball.removeDiv()
+    }
+
+    private addScore(player : string){
+        if(player == "player1") {
+            this.player1 +=1
+        } else {
+            this.player2 +=1
+        }
     }
     
 } 

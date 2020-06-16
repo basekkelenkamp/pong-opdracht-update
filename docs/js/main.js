@@ -58,6 +58,8 @@ var Ball = (function (_super) {
 var Game = (function () {
     function Game() {
         this.gameObjects = [];
+        this.player1 = 0;
+        this.player2 = 0;
         this.gameObjects.push(new Paddle(20, 87, 83));
         this.gameObjects.push(new Paddle(window.innerWidth - 20, 38, 40));
         for (var i = 0; i < 5; i++) {
@@ -72,9 +74,11 @@ var Game = (function () {
             gameObject.update();
             if (gameObject.getRectangle().left < 0 && gameObject instanceof Ball) {
                 this.removeBall(gameObject);
+                this.addScore("player2");
             }
             if (gameObject.getRectangle().right > window.innerWidth + 50 && gameObject instanceof Ball) {
                 this.removeBall(gameObject);
+                this.addScore("player1");
             }
             if (gameObject instanceof Paddle) {
                 for (var _b = 0, _c = this.gameObjects; _b < _c.length; _b++) {
@@ -87,6 +91,7 @@ var Game = (function () {
                 }
             }
         }
+        console.log("score: P1 has " + this.player1 + ", P2 has " + this.player2);
         requestAnimationFrame(function () { return _this.update(); });
     };
     Game.prototype.checkCollision = function (a, b) {
@@ -100,6 +105,14 @@ var Game = (function () {
         this.gameObjects.splice(i, 1);
         console.log(this.gameObjects.length);
         ball.removeDiv();
+    };
+    Game.prototype.addScore = function (player) {
+        if (player == "player1") {
+            this.player1 += 1;
+        }
+        else {
+            this.player2 += 1;
+        }
     };
     return Game;
 }());
