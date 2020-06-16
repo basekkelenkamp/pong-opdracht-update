@@ -72,7 +72,9 @@ var Game = (function () {
             gameObject.update();
             if (gameObject.getRectangle().left < 0 && gameObject instanceof Ball) {
                 this.removeBall(gameObject);
-                gameObject.removeDiv();
+            }
+            if (gameObject.getRectangle().right > window.innerWidth + 50 && gameObject instanceof Ball) {
+                this.removeBall(gameObject);
             }
             if (gameObject instanceof Paddle) {
                 for (var _b = 0, _c = this.gameObjects; _b < _c.length; _b++) {
@@ -97,6 +99,7 @@ var Game = (function () {
         var i = this.gameObjects.indexOf(ball);
         this.gameObjects.splice(i, 1);
         console.log(this.gameObjects.length);
+        ball.removeDiv();
     };
     return Game;
 }());

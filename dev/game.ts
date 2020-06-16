@@ -20,13 +20,17 @@ class Game {
             //call update functions from ball & paddle
             gameObject.update()
             
-                // ball leaves the screen: remove ball!
+                // ball leaves the screen left: remove ball!
                 if (gameObject.getRectangle().left < 0 && gameObject instanceof Ball) {
 
                     this.removeBall(gameObject)
-                    gameObject.removeDiv()
                 }
-                
+            
+                // ball leaves the screen right: remove ball!
+                if (gameObject.getRectangle().right > window.innerWidth+50 && gameObject instanceof Ball) {
+
+                    this.removeBall(gameObject)
+                }                
             
 
             if(gameObject instanceof Paddle){
@@ -68,6 +72,8 @@ class Game {
         let i = this.gameObjects.indexOf(ball)
         this.gameObjects.splice(i, 1)
         console.log(this.gameObjects.length)
+        
+        ball.removeDiv()
     }
     
 } 

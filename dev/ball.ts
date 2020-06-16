@@ -7,13 +7,13 @@ class Ball extends GameObject {
     
     constructor() {
         super()
-
+        
         this.div = document.createElement("ball")
         document.body.appendChild(this.div)
         
         this.x = window.innerWidth
         this.y = Math.random() * (window.innerHeight - 100)
-
+        
         this.speedX = -3 - (Math.random() * 6)
         this.speedY = Math.random() * 6 - 3
     }
