@@ -39,6 +39,9 @@ var Ball = (function (_super) {
     Ball.prototype.hitPaddle = function () {
         this.speedX *= -1;
     };
+    Ball.prototype.removeDiv = function () {
+        this.div.remove();
+    };
     Ball.prototype.update = function () {
         this.x += this.speedX;
         this.y += this.speedY;
@@ -54,26 +57,34 @@ var Ball = (function (_super) {
 }(GameObject));
 var Game = (function () {
     function Game() {
-        this.balls = [];
-        this.paddle = new Paddle(20, 87, 83);
+        this.gameObjects = [];
+        this.gameObjects.push(new Paddle(20, 87, 83));
+        this.gameObjects.push(new Paddle(window.innerWidth - 20, 38, 40));
         for (var i = 0; i < 5; i++) {
-            this.balls.push(new Ball());
+            this.gameObjects.push(new Ball());
         }
         this.update();
     }
     Game.prototype.update = function () {
         var _this = this;
-        for (var _i = 0, _a = this.balls; _i < _a.length; _i++) {
-            var b = _a[_i];
-            if (this.checkCollision(b.getRectangle(), this.paddle.getRectangle())) {
-                b.hitPaddle();
+        for (var _i = 0, _a = this.gameObjects; _i < _a.length; _i++) {
+            var gameObject = _a[_i];
+            gameObject.update();
+            if (gameObject.getRectangle().left < 0 && gameObject instanceof Ball) {
+                this.removeBall(gameObject);
+                gameObject.removeDiv();
             }
-            if (b.getRectangle().left < 0) {
-                console.log("game over");
+            if (gameObject instanceof Paddle) {
+                for (var _b = 0, _c = this.gameObjects; _b < _c.length; _b++) {
+                    var ball = _c[_b];
+                    if (ball instanceof Ball) {
+                        if (this.checkCollision(ball.getRectangle(), gameObject.getRectangle())) {
+                            ball.hitPaddle();
+                        }
+                    }
+                }
             }
-            b.update();
         }
-        this.paddle.update();
         requestAnimationFrame(function () { return _this.update(); });
     };
     Game.prototype.checkCollision = function (a, b) {
@@ -81,6 +92,11 @@ var Game = (function () {
             b.left <= a.right &&
             a.top <= b.bottom &&
             b.top <= a.bottom);
+    };
+    Game.prototype.removeBall = function (ball) {
+        var i = this.gameObjects.indexOf(ball);
+        this.gameObjects.splice(i, 1);
+        console.log(this.gameObjects.length);
     };
     return Game;
 }());

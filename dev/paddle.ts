@@ -58,4 +58,5 @@ class Paddle extends GameObject {
         // this.div.style.transform = `translate(${this.x}px, ${this.y}px)`
     }
     
+    
 }

@@ -22,6 +22,10 @@ class Ball extends GameObject {
         this.speedX *= -1
     }
 
+    public removeDiv(){
+        this.div.remove()
+    }
+
     public update() : void {
         this.x += this.speedX
         this.y += this.speedY
